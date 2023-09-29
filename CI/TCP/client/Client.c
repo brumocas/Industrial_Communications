@@ -8,7 +8,7 @@
 int main(){
 
     char *ip = "127.0.0.1";
-    int port = 5566;
+    int port = 1025;
 
     int sock;
     struct sockaddr_in addr;
@@ -17,7 +17,7 @@ int main(){
     int n;
 
     // Try to establish connection
-    sock = socket(AF_INET, SOCK_STREAM, SOL_IP);
+    sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sock < 0)
     {   
         // Report Error
@@ -32,24 +32,42 @@ int main(){
     memset(&addr, 0, sizeof(addr));
     // Add server_addr information
     addr.sin_family = AF_INET;
-    addr.sin_port = port;
+    addr.sin_port = htons(port);
     addr.sin_addr.s_addr = inet_addr(ip);
 
     // Connect to the server
-    connect(sock, (struct sockaddr*)&addr, sizeof(addr));
-    printf("Connected to the server");
+    if(connect(sock, (struct sockaddr*)&addr, sizeof(addr)) < 0){
+        // Report Error
+        perror("[-]Server not available\n");
+        exit(EXIT_FAILURE);
+    }
+    printf("Connected to the server\n");
 
+    // Clear buffer to send data
     bzero(buffer, 1024);
-    strcpy(buffer, "Hello this is client\n");
-    printf("Client: %s\n", buffer);
-    send(sock, buffer, strlen(buffer), 0);
+    strcpy(buffer, "Hello World");
 
+    // Send to the server
+    ssize_t bytes_send =  send(sock, buffer, strlen(buffer), 0);
+    if (bytes_send < 0)
+    {
+        perror("[-]Client failled send\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Receive response from the server
     bzero(buffer, 1024);
-    recv(sock, buffer, sizeof(buffer),0);
+    ssize_t bytes_rec = recv(sock, buffer, sizeof(buffer), 0);
+    if (bytes_rec < 0)
+    {
+        perror("[-]Client failled recv\n");
+        exit(EXIT_FAILURE);
+    }
     printf("Server: %s\n", buffer);
 
+    // Close connection
     close(sock);
-    printf("Disconected from the server\n");
+    printf("Disconnected from the server\n");
 
     return 0;
 
