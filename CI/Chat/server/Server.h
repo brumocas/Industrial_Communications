@@ -8,7 +8,7 @@
 #define IP "127.0.0.1"
 #define BUFFER_SIZE 1024
 
-char *ip = "127.0.0.1"; 
+char *ip = "192.168.31.114"; 
 int port = 8080;
 
 int server_sock, client_sock;

@@ -10,7 +10,7 @@ int main(){
         perror("[-]Socket Error\n");
         exit(EXIT_FAILURE);
     }
-
+    
     // Conection established correctly
     printf("[+]TCP Server socket Created\n");
     
@@ -20,7 +20,7 @@ int main(){
     // Add server_addr information
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(port); // htons(port) for convertion
-    server_addr.sin_addr.s_addr = inet_addr(ip); // 32 bits network byte order dot.decimal -> 32bits  // INADDR_ANY - any network interface
+    server_addr.sin_addr.s_addr = INADDR_ANY; // 32 bits network byte order dot.decimal -> 32bits  // INADDR_ANY - any network interface
 
     // The bind function is used to associate a socket with a specific network address, such as an IP address and port number.
     n = bind(server_sock, (struct sockadrr*)&server_addr, sizeof(server_addr));
