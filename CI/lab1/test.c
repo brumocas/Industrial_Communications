@@ -23,7 +23,7 @@ int main(){
     check_error = read_h_regs(IP, PORT, 0, NUMBER_OF_READS, buffer_regs);
     if (check_error < 0)
     {
-        printf("Error: Reading_h_regs (%d)\n",check_error);
+        printf("Error: Reading_h_regs (%d)\n", check_error);
         exit(EXIT_FAILURE);
     }
     

@@ -4,6 +4,7 @@
         "cstdlib": "c",
         "stdio.h": "c",
         "stdlib.h": "c",
-        "modbustcp.h": "c"
+        "modbustcp.h": "c",
+        "unistd.h": "c"
     }
 }

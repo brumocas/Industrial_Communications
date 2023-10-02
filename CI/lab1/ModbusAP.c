@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <unistd.h>
-
 #include "ModbusAP.h"
 
 #define MAX_APDU 256
@@ -10,7 +7,7 @@
 #define MAX_RHR_REGS 126 // max number of registers that can be read
 
 
-int read_h_regs(char* server_add, unsigned int port, uint16_t st_r, uint16_t n_r, int16_t* buffer){
+int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_r, int16_t* buffer){
 
     // check consistency of parameters
 
@@ -27,7 +24,7 @@ int read_h_regs(char* server_add, unsigned int port, uint16_t st_r, uint16_t n_r
     return  0;
 }
 
-int write_multiple_regs(char* server_add, unsigned int port, uint16_t st_r, uint16_t n_r, int16_t* buffer){
+int write_multiple_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_r, int16_t* buffer){
     
     uint8_t APDU[MAX_APDU];
     int i;
@@ -65,7 +62,7 @@ int write_multiple_regs(char* server_add, unsigned int port, uint16_t st_r, uint
     printf("\n");
     
     // send APDU for the server
-    i = send_modbus_request(server_add, port, APDU, APDUlen, APDU);
+    i = send_modbus_request(server_addr, port, APDU, APDUlen, APDU);
 
     // Check non modbus error
     if ( i < 0 )
