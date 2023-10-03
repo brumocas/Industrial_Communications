@@ -47,7 +47,7 @@ int write_multiple_regs(char* server_addr, unsigned int port, uint16_t st_r, uin
     
     if (st_r < 0)
     {
-        printf("[AP,WMR] Error: too many registers\n");
+        printf("[AP,WMR] Error: invalid starting address\n");
         return -1;
     }
 
