@@ -8,7 +8,11 @@
 #define IP "127.0.0.1"
 #define PORT 502
 #define NUMBER_OF_READS 2
-#define NUMBER_OF_WRITES 1
+#define NUMBER_OF_WRITES 3
+
+// Debug instructions
+//#define DEBUG
+#undef DEBUG_OFF
 
 int main(){
 
@@ -27,13 +31,16 @@ int main(){
         exit(EXIT_FAILURE);
     }
     
+    #ifdef DEBUG
     for (int i = 0; i < NUMBER_OF_READS; i++)
     printf("%d ", buffer_regs[i]);
     printf("\n");    
+    #endif
     
-    uint16_t soma = buffer_regs[0] + buffer_regs[1];
+    //uint16_t soma = buffer_regs[0] + buffer_regs[1];
+    uint16_t soma[3] = {10 ,20, 30};
 
-    check_error = write_multiple_regs(IP, PORT, 1, NUMBER_OF_WRITES, &soma);
+    check_error = write_multiple_regs(IP, PORT, 0, NUMBER_OF_WRITES, &soma);
     if (check_error < 0)
     {
         printf("Error: write_multiple_regs (%d)\n", check_error);

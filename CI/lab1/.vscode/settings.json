@@ -5,6 +5,7 @@
         "stdio.h": "c",
         "stdlib.h": "c",
         "modbustcp.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "string.h": "c"
     }
 }

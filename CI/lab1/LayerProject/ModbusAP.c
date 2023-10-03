@@ -6,6 +6,9 @@
 #define MAX_WR_REGS 123 // max number of registers that can be written
 #define MAX_RHR_REGS 126 // max number of registers that can be read
 
+// Debug instructions
+//#define DEBUG
+#undef DEBUG_OFF
 
 int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_r, int16_t* buffer){
 
@@ -30,7 +33,19 @@ int write_multiple_regs(char* server_addr, unsigned int port, uint16_t st_r, uin
     int i;
 
     // verify if parameters are within proper ranges
-    if (n_r > MAX_WR_REGS)
+    if (!server_addr || port < 0 || !buffer)
+    {
+        printf("[AP,WMR] Invalid Parameters\n");
+        return -1;
+    }
+    
+    if (n_r > MAX_WR_REGS || n_r < 0)
+    {
+        printf("[AP,WMR] Error: too many registers\n");
+        return -1;
+    }
+    
+    if (st_r < 0)
     {
         printf("[AP,WMR] Error: too many registers\n");
         return -1;
@@ -56,10 +71,12 @@ int write_multiple_regs(char* server_addr, unsigned int port, uint16_t st_r, uin
     // Get APDU lenght
     uint16_t APDUlen = 6 + 2*n_r;
 
+    #ifdef DEBUG
     // Show APDU
     printf("[AP,WMR] APDU to be sent\n");
     for ( i = 0; i < APDUlen; i++) printf("%.2x ",APDU[i]);
     printf("\n");
+    #endif
     
     // send APDU for the server
     i = send_modbus_request(server_addr, port, APDU, APDUlen, APDU);
@@ -80,5 +97,4 @@ int write_multiple_regs(char* server_addr, unsigned int port, uint16_t st_r, uin
 
     //else return 0 - successful
     return 0;
-     
 }

@@ -8,7 +8,7 @@
 int main(){
 
     char *ip = "127.0.0.1";
-    int port = 1025;
+    int port = 502;
 
     int sock;
     struct sockaddr_in addr;
