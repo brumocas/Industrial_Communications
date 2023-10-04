@@ -7,8 +7,8 @@
 uint16_t TI = 0; 
 
 // Debug instructions
-#define DEBUG
-//#undef DEBUG_OFF
+//#define DEBUG
+#undef DEBUG_OFF
 
 int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uint16_t APDUlen, uint8_t* APDU_r){
     
@@ -47,7 +47,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     MBAP[5] = (uint8_t) ((APDUlen + 1) & 0xFF); //  APDUlen Low byte
     MBAP[6] = (uint8_t) (UNIT_ID);              //  Slave ID
 
-    #ifdef
+    #ifdef DEBUG
     printf("[TCP] MBAP: ");
     for ( i = 0; i < MBAP_SIZE; i++) printf("%.2x ",MBAP[i]);
     printf("\n");
@@ -67,7 +67,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
         return -1;
     }
 
-    #ifdef
+    #ifdef DEBUG
     printf("[TCP] Message sent to Slave: ");
     for ( i = 0; i < MBAP_SIZE; i++) printf("%.2x ",MBAP[i]);
     for ( i = 0; i < APDUlen; i++) printf("%.2x ",APDU[i]);
@@ -83,7 +83,9 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
 
     // Receive response MBAPDU payload (APDU_R) - get size from "Lenght" field
     int len = (MBAP[4] << 8) + (MBAP[5]); // Recover lenght from field [4] and [5]
-    printf("len: %d\n", len); 
+    #ifdef DEBUG
+    printf("len: %d\n", len);
+    #endif
 
     if (recv(sock, APDU_r, len - 1, 0) < 0)
     {
@@ -91,7 +93,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
         return -1;
     }
 
-    #ifdef
+    #ifdef DEBUG
     printf("[TCP] Message received from slave :");
     for ( i = 0; i < MBAP_SIZE; i++) printf("%.2x ",MBAP[i]);
     for ( i = 0; i < len - 1; i++) printf("%.2x ",APDU[i]);
