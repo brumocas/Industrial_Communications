@@ -7,8 +7,7 @@
 #define MAX_RHR_REGS 125 // max number of registers that can be read
 
 // Debug instructions
-//#define DEBUG
-#undef DEBUG_OFF
+#define DEBUG
 
 int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_r, int16_t* buffer){
 
@@ -33,7 +32,6 @@ int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_
         printf("[AP,WMR] Error: invalid starting address\n");
         return -1;
     }
-
 
     // build header of APDU
     APDU[0] = (uint8_t) FC_RHR;         // function code
@@ -81,7 +79,7 @@ int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_
     // Get registers values from APDU
     for ( i = 0; i < n_r; i++)
     {
-        buffer[i] =  (APDU[2 + 2*i] >> 8) + APDU[3 + 2*i];
+        buffer[i] = (APDU[2 + 2*i] >> 8) + APDU[3 + 2*i];
     }
     
     //else return 0 - successful

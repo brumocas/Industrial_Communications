@@ -1,14 +1,13 @@
 #include "ModbusTCP.h"
 
 #define MBAP_SIZE 7     // Header size of MBAP in bytes
-#define UNIT_ID 1      // Slave ID
+#define UNIT_ID 1       // Slave ID
 
 
-uint16_t TI = 0; 
+uint16_t TI = 0;        // Transaction identifier
 
 // Debug instructions
-//#define DEBUG
-#undef DEBUG_OFF
+#define DEBUG
 
 int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uint16_t APDUlen, uint8_t* APDU_r){
     
@@ -82,12 +81,10 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     }
 
     // Receive response MBAPDU payload (APDU_R) - get size from "Lenght" field
-    int len = (MBAP[4] << 8) + (MBAP[5]); // Recover lenght from field [4] and [5]
-    #ifdef DEBUG
-    printf("len: %d\n", len);
-    #endif
+    APDUlen = (MBAP[4] << 8) + (MBAP[5]) - 1; // Recover lenght from field [4] and [5]
+    // less 1 because of the unit identifier
 
-    if (recv(sock, APDU_r, len - 1, 0) < 0)
+    if (recv(sock, APDU_r, APDUlen, 0) < 0)
     {
         printf("[TCP] Error: reading APDU_R from socket\n");
         return -1;
@@ -96,7 +93,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     #ifdef DEBUG
     printf("[TCP] Message received from slave :");
     for ( i = 0; i < MBAP_SIZE; i++) printf("%.2x ",MBAP[i]);
-    for ( i = 0; i < len - 1; i++) printf("%.2x ",APDU[i]);
+    for ( i = 0; i < APDUlen; i++) printf("%.2x ",APDU[i]);
     printf("\n");
     #endif
 

@@ -12,7 +12,6 @@
 
 // Debug instructions
 #define DEBUG
-//#undef DEBUG_OFF
 
 int main(){
     
@@ -29,7 +28,6 @@ int main(){
         printf("Error: write_multiple_regs (%d)\n", check_error);
         exit(EXIT_FAILURE);
     }
-
 
     check_error = read_h_regs(IP, PORT, 0, NUMBER_OF_READS, buffer_regs);
     if (check_error < 0)
