@@ -82,7 +82,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
 
     // Receive response MBAPDU payload (APDU_R) - get size from "Lenght" field
     APDUlen = (MBAP[4] << 8) + (MBAP[5]) - 1; // Recover lenght from field [4] and [5]
-    // less 1 because of the unit identifier
+    // less 1 because of the unit identifier in MBAP
 
     if (recv(sock, APDU_r, APDUlen, 0) < 0)
     {
