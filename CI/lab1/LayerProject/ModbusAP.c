@@ -56,7 +56,7 @@ int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_
     if ( i < 0 )
     {
        printf("[AP,RHR] Error from send_modbus_request\n");
-       return -1;
+       return i;
     }
 
     // Check modbus error - exception
@@ -145,7 +145,7 @@ int write_multiple_regs(char* server_addr, unsigned int port, uint16_t st_r, uin
     if ( i < 0 )
     {
        printf("[AP,WMR] Error from send_modbus_request\n");
-       return -1;
+       return i;
     }
 
     // Check modbus error - exception

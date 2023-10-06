@@ -15,6 +15,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     struct sockaddr_in server;
     char MBAP[MBAP_SIZE];
 
+
     // Create socket:
     if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
     {
@@ -22,6 +23,16 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
         return -1;
     }
     printf("[TCP] Socket created\n");
+
+    // Set the timeout for recv using setsockopt
+    struct timeval timeout;
+    timeout.tv_sec = 2; // Set the timeout to 2 seconds
+    timeout.tv_usec = 0;
+    
+    if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1) {
+        printf("[TCP] Error: creating setsockopt\n");
+        return - 1;
+    }
     
     // Set port and IP of the server
     server.sin_family = AF_INET;
@@ -74,15 +85,22 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     #endif
 
     // Receive response MBAPDU header (MBAP) - fixed size, reusing "MBAP"
-    if (recv(sock, MBAP, MBAP_SIZE, 0) < 0)
-    {
-        printf("[TCP] Error: reading MBAP from socket\n");
-        return -1;
+    if (recv(sock, MBAP, MBAP_SIZE, 0) < 0 )
+    {   
+        if (errno == EAGAIN || errno == EWOULDBLOCK){ 
+            printf("[TCP] Error: recv timeout\n");
+            return -10;
+        }
+        else
+        {
+            printf("[TCP] Error: reading MBAP from socket\n");
+            return -1;
+        }
     }
 
     // Receive response MBAPDU payload (APDU_R) - get size from "Lenght" field
     APDUlen = (MBAP[4] << 8) + (MBAP[5]) - 1; // Recover lenght from field [4] and [5]
-    // less 1 because of the unit identifier in MBAP
+    // less 1 because of the unit identifier in MBAP header
 
     if (recv(sock, APDU_r, APDUlen, 0) < 0)
     {
@@ -97,7 +115,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     printf("\n");
     #endif
 
-    close();
+    close(sock);
 
     return 0;
 }

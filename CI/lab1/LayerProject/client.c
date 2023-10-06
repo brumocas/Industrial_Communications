@@ -15,7 +15,7 @@
 
 int main(){
     
-    // Buuffer to store the read registers
+    // Buffer to store the read registers
     // Registers have 16 bits each = 2 bytes
     int16_t buffer_regs[NUMBER_OF_READS]; 
     int check_error;
