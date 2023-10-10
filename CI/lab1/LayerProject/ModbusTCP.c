@@ -7,7 +7,7 @@
 uint16_t TI = 0;        // Transaction identifier
 
 // Debug instructions
-#define DEBUG
+//#define DEBUG
 
 int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uint16_t APDUlen, uint8_t* APDU_r){
     
@@ -22,15 +22,20 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
         printf("[TCP] Error: creating socket\n");
         return -1;
     }
+    #ifdef DEBUG
     printf("[TCP] Socket created\n");
+    #endif
 
     // Set the timeout for recv using setsockopt
     struct timeval timeout;
     timeout.tv_sec = 2; // Set the timeout to 2 seconds
     timeout.tv_usec = 0;
     
-    if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1) {
+    if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1) 
+    {
+        #ifdef DEBUG
         printf("[TCP] Error: creating setsockopt\n");
+        #endif
         return - 1;
     }
     
@@ -42,10 +47,14 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     // Try connecting with the server
     if (connect(sock, (struct sockaddr*)&server, sizeof(server)) < 0)
     {   
+        #ifdef DEBUG
         printf("[TCP] Error: connecting to server\n");
+        #endif
         return -1;
     }
+    #ifdef DEBUG
     printf("[TCP] Successful connection to the server\n");
+    #endif
 
     // Build MBAPDU header
     TI++;
@@ -65,15 +74,19 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     
     // Send request MBAPDU header (MBAP)
     if (send(sock, MBAP, MBAP_SIZE, 0) < 0)
-    {
+    {   
+        #ifdef DEBUG
         printf("[TCP] Error: writing MBAP to socket\n");
+        #endif
         return -1;
     }
 
     // Send request MBAPDU payload (APDU)
     if (send(sock, APDU, APDUlen, 0) < 0)
-    {
+    {   
+        #ifdef DEBUG
         printf("[TCP] Error: writing MBAP to socket\n");
+        #endif
         return -1;
     }
 
@@ -88,12 +101,16 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     if (recv(sock, MBAP, MBAP_SIZE, 0) < 0 )
     {   
         if (errno == EAGAIN || errno == EWOULDBLOCK){ 
+            #ifdef DEUBG
             printf("[TCP] Error: recv timeout\n");
+            #endif
             return -10;
         }
         else
-        {
+        {   
+            #ifdef DEUBG
             printf("[TCP] Error: reading MBAP from socket\n");
+            #endif
             return -1;
         }
     }
@@ -103,8 +120,10 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     // less 1 because of the unit identifier in MBAP header
 
     if (recv(sock, APDU_r, APDUlen, 0) < 0)
-    {
+    {   
+        #ifdef DEUBG
         printf("[TCP] Error: reading APDU_R from socket\n");
+        #endif
         return -1;
     }
 
@@ -115,6 +134,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     printf("\n");
     #endif
 
+    
     close(sock);
 
     return 0;

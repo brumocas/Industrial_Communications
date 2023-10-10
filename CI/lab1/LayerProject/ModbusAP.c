@@ -7,7 +7,7 @@
 #define MAX_RHR_REGS 125 // max number of registers that can be read
 
 // Debug instructions
-#define DEBUG
+//#define DEBUG
 
 int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_r, int16_t* buffer){
 
@@ -16,20 +16,26 @@ int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_
 
     // verify if parameters are within proper ranges
     if (!server_addr || port < 0 || !buffer)
-    {
+    {   
+        #ifdef DEBUG
         printf("[AP,WMR] Invalid Parameters\n");
+        #endif
         return -1;
     }
     
     if (n_r > MAX_RHR_REGS || n_r < 0)
-    {
+    {   
+        #ifdef DEBUG
         printf("[AP,WMR] Error: too many registers\n");
+        #endif
         return -1;
     }
     
     if (st_r < 0)
-    {
+    {   
+        #ifdef DEBUG
         printf("[AP,WMR] Error: invalid starting address\n");
+        #endif
         return -1;
     }
 
@@ -43,8 +49,8 @@ int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_
     // Get APDU lenght
     uint16_t APDUlen = 5;
 
-    #ifdef DEBUG
     // Show APDU
+    #ifdef DEBUG
     printf("[AP,RHR] APDU to be sent\n");
     for ( i = 0; i < APDUlen; i++) printf("%.2x ",APDU[i]);
     printf("\n");
@@ -54,15 +60,19 @@ int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_
     i = send_modbus_request(server_addr, port, APDU, APDUlen, APDU);
     // Check non modbus error
     if ( i < 0 )
-    {
-       printf("[AP,RHR] Error from send_modbus_request\n");
-       return i;
+    {   
+        #ifdef DEBUG
+        printf("[AP,RHR] Error from send_modbus_request\n");
+        #endif
+        return i;
     }
 
     // Check modbus error - exception
     if (APDU[0] & 0x80)
-    {
+    {   
+        #ifdef DEBUG
         printf("[AP,RHR] Modbus exception %d\n", APDU[1]);
+        #endif
         return APDU[1];
     }
 
@@ -94,20 +104,26 @@ int write_multiple_regs(char* server_addr, unsigned int port, uint16_t st_r, uin
 
     // verify if parameters are within proper ranges
     if (!server_addr || port < 0 || !buffer)
-    {
+    {   
+        #ifdef DEBUG
         printf("[AP,WMR] Invalid Parameters\n");
+        #endif
         return -1;
     }
     
     if (n_r > MAX_WMR_REGS || n_r < 0)
-    {
+    {   
+        #ifdef DEBUG
         printf("[AP,WMR] Error: too many registers\n");
+        #endif
         return -1;
     }
     
     if (st_r < 0)
-    {
+    {   
+        #ifdef DEBUG
         printf("[AP,WMR] Error: invalid starting address\n");
+        #endif
         return -1;
     }
 
@@ -143,15 +159,19 @@ int write_multiple_regs(char* server_addr, unsigned int port, uint16_t st_r, uin
 
     // Check non modbus error
     if ( i < 0 )
-    {
-       printf("[AP,WMR] Error from send_modbus_request\n");
-       return i;
+    {   
+        #ifdef DEBUG
+        printf("[AP,WMR] Error from send_modbus_request\n");
+        #endif
+        return i;
     }
 
     // Check modbus error - exception
     if (APDU[0] & 0x80)
-    {
+    {   
+        #ifdef DEBUG
         printf("[AP,WMR] Modbus exception %d\n", APDU[1]);
+        #endif
         return APDU[1];
     }
 
