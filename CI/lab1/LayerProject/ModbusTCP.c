@@ -1,7 +1,7 @@
 #include "ModbusTCP.h"
 
 #define MBAP_SIZE 7     // Header size of MBAP in bytes
-#define UNIT_ID 1       // Slave ID
+#define UNIT_ID 51      // Slave ID
 
 
 uint16_t TI = 0;        // Transaction identifier
@@ -15,11 +15,12 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     struct sockaddr_in server;
     char MBAP[MBAP_SIZE];
 
-
     // Create socket:
     if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
-    {
+    {   
+        #ifdef DEBUG
         printf("[TCP] Error: creating socket\n");
+        #endif
         return -1;
     }
     #ifdef DEBUG
@@ -104,7 +105,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
             #ifdef DEUBG
             printf("[TCP] Error: recv timeout\n");
             #endif
-            return -10;
+            return -1;
         }
         else
         {   

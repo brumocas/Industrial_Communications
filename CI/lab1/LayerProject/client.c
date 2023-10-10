@@ -11,7 +11,7 @@
 #define NUMBER_OF_WRITES 3
 
 // Debug instructions
-//#define DEBUG
+#define DEBUG
 
 int main(){
     
