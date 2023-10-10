@@ -134,7 +134,6 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     printf("\n");
     #endif
 
-    
     close(sock);
 
     return 0;
