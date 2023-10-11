@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdbool.h>
+#include <ctype.h>
 #include "ModbusTCP.h"
 
 
@@ -26,7 +28,7 @@
         5   // ACKNOWLEDGE
         6   // SERVER DEVICE BUSY
         7   // MEMORY PARITY ERROR
-*/
+*/ 
 int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_r, int16_t* buffer);
 
 

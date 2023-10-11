@@ -5,7 +5,7 @@
 
 // 1 byte = 8 bits
 
-#define IP "127.0.0.1"
+#define IP "128.1.0.0.2"
 #define PORT 502
 
 
@@ -23,7 +23,7 @@ int main(){
     int check_error;
     int16_t soma[1] = {0x41};
 
-    check_error = write_multiple_regs(IP, PORT, 121, 1, &soma);
+    check_error = write_multiple_regs(IP, PORT, 121, 1, soma);
     if (check_error < 0)
     {   
         #ifdef DEBUG
@@ -58,7 +58,7 @@ int main(){
         C[0] = A[0] + A[3];
     }
 
-    check_error = write_multiple_regs(IP, PORT, 127, 1, &C);
+    check_error = write_multiple_regs(IP, PORT, 127, 1, C);
     if (check_error < 0)
     {   
         #ifdef DEBUG
@@ -67,7 +67,7 @@ int main(){
     }
     printf("result = %d\n",check_error);
 
-    check_error = write_multiple_regs("10.227.113.1", PORT, 127, 1, &C);
+    check_error = write_multiple_regs("10.227.113.1", PORT, 127, 1, C);
     if (check_error < 0)
     {   
         #ifdef DEBUG

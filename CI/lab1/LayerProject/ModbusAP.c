@@ -23,14 +23,14 @@ int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_
         return -1;
     }
     
-    if (n_r > MAX_RHR_REGS || n_r < 0)
+    if (n_r > MAX_RHR_REGS || n_r < 1)
     {   
         #ifdef DEBUG
         printf("[AP,WMR] Error: too many registers\n");
         #endif
         return -1;
     }
-    
+
     if (st_r < 0)
     {   
         #ifdef DEBUG
@@ -105,13 +105,13 @@ int write_multiple_regs(char* server_addr, unsigned int port, uint16_t st_r, uin
     // verify if parameters are within proper ranges
     if (!server_addr || port < 0 || !buffer)
     {   
-        #ifdef DEBUG
+        //#ifdef DEBUG
         printf("[AP,WMR] Invalid Parameters\n");
-        #endif
+       //#endif
         return -1;
     }
     
-    if (n_r > MAX_WMR_REGS || n_r < 0)
+    if (n_r > MAX_WMR_REGS || n_r < 1)
     {   
         #ifdef DEBUG
         printf("[AP,WMR] Error: too many registers\n");
