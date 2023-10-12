@@ -5,12 +5,13 @@
 
 // 1 byte = 8 bits
 
-#define IP "128.1.0.0.2"
+#define IP1 "127.0.0.1"
+#define IP2 "10.227.113.31"
 #define PORT 502
 
 
 // Debug instructions
-#define DEBUG
+//#define DEBUG
 
 int main(){
     
@@ -23,7 +24,7 @@ int main(){
     int check_error;
     int16_t soma[1] = {0x41};
 
-    check_error = write_multiple_regs(IP, PORT, 121, 1, soma);
+    check_error = write_multiple_regs(IP1, PORT, 121, 1, soma);
     if (check_error < 0)
     {   
         #ifdef DEBUG
@@ -33,7 +34,7 @@ int main(){
     printf("result = %d\n",check_error);
 
     
-    check_error = read_h_regs(IP, PORT, 122, 4, A);
+    check_error = read_h_regs(IP1, PORT, 122, 4, A);
     if (check_error < 0)
     {   
         #ifdef DEBUG
@@ -42,7 +43,7 @@ int main(){
     }
     printf("result = %d\n",check_error);
 
-    check_error = read_h_regs(IP, PORT, 126, 1, B);
+    check_error = read_h_regs(IP1, PORT, 126, 1, B);
     if (check_error < 0)
     {   
         #ifdef DEBUG
@@ -58,7 +59,7 @@ int main(){
         C[0] = A[0] + A[3];
     }
 
-    check_error = write_multiple_regs(IP, PORT, 127, 1, C);
+    check_error = write_multiple_regs(IP1, PORT, 127, 1, C);
     if (check_error < 0)
     {   
         #ifdef DEBUG
@@ -67,7 +68,7 @@ int main(){
     }
     printf("result = %d\n",check_error);
 
-    check_error = write_multiple_regs("10.227.113.1", PORT, 127, 1, C);
+    check_error = write_multiple_regs(IP2, PORT, 127, 1, C);
     if (check_error < 0)
     {   
         #ifdef DEBUG
