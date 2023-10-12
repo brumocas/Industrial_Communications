@@ -1,7 +1,7 @@
 #include "ModbusTCP.h"
 
 #define MBAP_SIZE 7     // Header size of MBAP in bytes
-#define UNIT_ID 51      // Slave ID
+#define UNIT_ID 1      // Slave ID
 
 
 uint16_t TI = 0;        // Transaction identifier (TI), increased by one every new transaction
@@ -114,6 +114,25 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
             #endif
             return -1;
         }
+    }
+    
+    // Check for TI response number
+    int TI_r = (MBAP[0] << 8) + (MBAP[1]);
+    if (TI_r != TI)
+    {
+        #ifdef DEUBG
+        printf("[TCP] Error: Invalid TI response number\n");
+        #endif
+        return -1;    
+    }
+
+    // Check for protocol response number
+    if ((MBAP[2] != 0x00) | (MBAP[3] != 0x00))
+    {
+        #ifdef DEUBG
+        printf("[TCP] Error: Invalid protocol response number\n");
+        #endif
+        return -1;    
     }
 
     // Receive response MBAPDU payload (APDU_R) - get size from "Lenght" field
