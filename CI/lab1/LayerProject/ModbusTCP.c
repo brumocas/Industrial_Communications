@@ -4,7 +4,7 @@
 #define UNIT_ID 51      // Slave ID
 
 
-uint16_t TI = 0;        // Transaction identifier
+uint16_t TI = 0;        // Transaction identifier (TI), increased by one every new transaction
 
 // Debug instructions
 //#define DEBUG
@@ -51,7 +51,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
         #ifdef DEBUG
         printf("[TCP] Error: connecting to server\n");
         #endif
-        return -1;
+        return -20;
     }
     #ifdef DEBUG
     printf("[TCP] Successful connection to the server\n");
@@ -105,7 +105,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
             #ifdef DEUBG
             printf("[TCP] Error: recv timeout\n");
             #endif
-            return -1;
+            return -10;
         }
         else
         {   
@@ -134,7 +134,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     for ( i = 0; i < APDUlen; i++) printf("%.2x ",APDU[i]);
     printf("\n");
     #endif
-
+    
     close(sock);
 
     return 0;

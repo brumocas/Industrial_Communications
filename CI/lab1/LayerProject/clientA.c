@@ -25,7 +25,7 @@ int main(){
     int16_t soma[1] = {0x41};
 
     check_error = write_multiple_regs(IP1, PORT, 121, 1, soma);
-    if (check_error < 0)
+    if (check_error != 0)
     {   
         #ifdef DEBUG
         printf("Error: write_multiple_regs (%d)\n", check_error);
@@ -35,7 +35,7 @@ int main(){
 
     
     check_error = read_h_regs(IP1, PORT, 122, 4, A);
-    if (check_error < 0)
+    if (check_error != 0)
     {   
         #ifdef DEBUG
         printf("Error: Reading_h_regs (%d)\n", check_error);
@@ -44,7 +44,7 @@ int main(){
     printf("result = %d\n",check_error);
 
     check_error = read_h_regs(IP1, PORT, 126, 1, B);
-    if (check_error < 0)
+    if (check_error != 0)
     {   
         #ifdef DEBUG
         printf("Error: Reading_h_regs (%d)\n", check_error);
@@ -60,7 +60,7 @@ int main(){
     }
 
     check_error = write_multiple_regs(IP1, PORT, 127, 1, C);
-    if (check_error < 0)
+    if (check_error != 0)
     {   
         #ifdef DEBUG
         printf("Error: write_multiple_regs (%d)\n", check_error);
@@ -69,7 +69,7 @@ int main(){
     printf("result = %d\n",check_error);
 
     check_error = write_multiple_regs(IP2, PORT, 127, 1, C);
-    if (check_error < 0)
+    if (check_error != 0)
     {   
         #ifdef DEBUG
         printf("Error: write_multiple_regs (%d)\n", check_error);
