@@ -3,6 +3,7 @@
         "cstdlib": "c",
         "modbustcp.h": "c",
         "modbusap.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "stdio.h": "c"
     }
 }

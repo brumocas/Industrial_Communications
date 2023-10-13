@@ -1,8 +1,10 @@
 #include "ModbusTCP.h"
 
 #define MBAP_SIZE 7     // Header size of MBAP in bytes
-#define UNIT_ID 1      // Slave ID
+#define UNIT_ID 1       // Slave ID
 
+#define TIMEOUT_RETURN -10 // Return value for timeout error
+#define CONNECTION_RETURN -20 // Return value for connection error
 
 uint16_t TI = 0;        // Transaction identifier (TI), increased by one every new transaction
 
@@ -51,7 +53,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
         #ifdef DEBUG
         printf("[TCP] Error: connecting to server\n");
         #endif
-        return -20;
+        return CONNECTION_RETURN;
     }
     #ifdef DEBUG
     printf("[TCP] Successful connection to the server\n");
@@ -105,7 +107,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
             #ifdef DEUBG
             printf("[TCP] Error: recv timeout\n");
             #endif
-            return -10;
+            return TIMEOUT_RETURN;
         }
         else
         {   
