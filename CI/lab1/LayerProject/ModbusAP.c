@@ -7,7 +7,7 @@
 #define MAX_RHR_REGS 125 // max number of registers that can be read
 
 // Debug instructions
-//#define DEBUG
+#define DEBUG
 
 int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_r, int16_t* buffer){
 
@@ -77,7 +77,7 @@ int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_
     }
 
     // Received APDU lenght 
-    APDUlen = APDU[1] + 2; 
+    APDUlen = (uint16_t)(APDU[1]) + 2; 
 
     // Show received APDU
     #ifdef DEBUG
@@ -86,10 +86,10 @@ int read_h_regs(char* server_addr, unsigned int port, uint16_t st_r, uint16_t n_
     printf("\n");
     #endif
     
-    // Get registers values from APDU
+    // Get registers values from APDU_r
     for ( i = 0; i < n_r; i++)
     {
-        buffer[i] = (APDU[2 + 2*i] >> 8) + APDU[3 + 2*i];
+        buffer[i] = (uint16_t)(APDU[2 + 2*i] << 8) + (uint16_t)APDU[3 + 2*i];
     }
     
     //else return 0 - successful

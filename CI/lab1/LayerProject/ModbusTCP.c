@@ -9,13 +9,13 @@
 uint16_t TI = 0;        // Transaction identifier (TI), increased by one every new transaction
 
 // Debug instructions
-//#define DEBUG
+#define DEBUG
 
 int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uint16_t APDUlen, uint8_t* APDU_r){
     
     int sock, i;
     struct sockaddr_in server;
-    char MBAP[MBAP_SIZE];
+    uint8_t MBAP[MBAP_SIZE];
 
     // Create socket:
     if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
@@ -119,7 +119,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     }
     
     // Check for TI response number
-    int TI_r = (MBAP[0] << 8) + (MBAP[1]);
+    uint16_t TI_r =  (uint16_t)(MBAP[0] << 8) +  (uint16_t)(MBAP[1]);
     if (TI_r != TI)
     {
         #ifdef DEUBG
@@ -138,7 +138,7 @@ int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uin
     }
 
     // Receive response MBAPDU payload (APDU_R) - get size from "Lenght" field
-    APDUlen = (MBAP[4] << 8) + (MBAP[5]) - 1; // Recover lenght from field [4] and [5]
+    APDUlen = (uint16_t)(MBAP[4] << 8) + (uint16_t)(MBAP[5]) - 1; // Recover lenght from field [4] and [5]
     // less 1 because of the unit identifier in MBAP header
 
     if (recv(sock, APDU_r, APDUlen, 0) < 0)

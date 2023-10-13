@@ -9,9 +9,8 @@
 #define IP2 "10.227.113.31"
 #define PORT 502
 
-
 // Debug instructions
-//#define DEBUG
+#define DEBUG
 
 int main(){
     
