@@ -9,7 +9,7 @@
 uint16_t TI = 0;        // Transaction identifier (TI), increased by one every new transaction
 
 // Debug instructions
-#define DEBUG
+//#define DEBUG
 
 int send_modbus_request(char* server_addr, unsigned int port, uint8_t* APDU, uint16_t APDUlen, uint8_t* APDU_r){
     
