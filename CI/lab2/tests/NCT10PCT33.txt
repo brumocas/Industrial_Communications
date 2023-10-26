@@ -1,10 +1,4 @@
-[21:08:07:803]  
-[21:08:07:803] Start Modbus
-[21:08:08:555]  
-[21:08:08:555] Time measure in microseconds, send M to modbus, C to canopen, S to stop.
-[21:08:08:560]  
-[21:08:08:560]  
-[21:08:08:560] Loop: , 1 , SlaveMod: , 42856 ,  
+ [21:08:08:560] Loop: , 1 , SlaveMod: , 42856 ,  
 [21:08:10:173] Loop: , 2 , SlaveMod: , 27547 ,  
 [21:08:12:117] Loop: , 3 , SlaveMod: , 41289 ,  
 [21:08:13:703] Loop: , 4 , SlaveMod: , 46299 ,  
@@ -104,5 +98,4 @@
 [21:11:14:372] Loop: , 98 , SlaveMod: , 41648 ,  
 [21:11:16:028] Loop: , 99 , SlaveMod: , 33151 ,  
 [21:11:17:973] Loop: , 100 , SlaveMod: , 32516 ,  
-[21:11:19:552] Stop
 
