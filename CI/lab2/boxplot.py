@@ -17,9 +17,8 @@ def get_dataset(path):
             columns = line.strip().split( ', ')
             time = columns[-1].strip().split(' ')[0]
             
-
             # Extract the last column and convert it to the desired data type if needed
-            last_column_value = int(time)/(10**3)
+            last_column_value = int(time)/(10**3) # time in ms
         
             # Append the last column value to the array
             last_column_data.append(last_column_value)
@@ -61,13 +60,19 @@ def get_box_plot(pct, x ,y, axes):
     axes[x , y].set_title(f"PCT[{pct}]")
     
     axes[x , y].grid(True)
+    
+    # Set y-label for the subplot
+    axes[x ,y].set_ylabel("NRT Value (ms)")
+        
+    # Set x-label for the subplot
+    axes[x , y].set_xlabel("NCT Value (ms)")
 
     return 
 
 if __name__ == "__main__":
     pct = ["11", "33", "55", "77"]
     
-    fig, axes = plt.subplots(2, 2, figsize=(15, 15), facecolor = "grey")
+    fig, axes = plt.subplots(2, 2, figsize=(15, 10), facecolor = "grey")
     
     get_box_plot(pct[0], 0, 0, axes)
     get_box_plot(pct[1], 0, 1, axes)
