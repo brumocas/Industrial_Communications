@@ -33,7 +33,7 @@ def plot_pct_line(pct):
     max_values = []  # To store the maximum values
     min_values = []  # To store the minimum values
     
-    # Calculate the maximum values and store them in max_values
+    # Calculate the maximum values and store them in max_values 
     for i in range(len(nct)):
         path = "NCT" + nct[i] + "PCT" + pct
         dataset_max = max(get_dataset(path))
