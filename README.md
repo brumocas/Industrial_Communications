@@ -105,4 +105,4 @@ Information on how to contribute to the Modbus TCP/IP section of the repository,
 
 ## License
 
-Specify the license under which the content of the Modbus TCP/IP section is distributed.
+This repository is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
